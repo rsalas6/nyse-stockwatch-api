@@ -1,0 +1,63 @@
+version: '3'
+
+vars:
+  APP_NAME: nyse-stockwatch-backend
+
+tasks:
+  run:
+    desc: Execute the complete process to run the project
+    cmds:
+      - task: build
+      - task: upd
+      - task: makemigrations
+      - task: migrate
+
+  up:
+    desc: Start the Docker services in foreground mode
+    cmds:
+      - docker-compose up
+
+  upd:
+    desc: Start the Docker services in detached mode
+    cmds:
+      - docker-compose up -d
+
+  down:
+    desc: Stop and remove Docker services
+    cmds:
+      - docker-compose down
+
+  build:
+    desc: Build the Docker services
+    cmds:
+      - docker-compose build
+
+  makemigrations:
+    desc: Run database migrations in Django
+    cmds:
+      - docker-compose exec api python manage.py makemigrations
+
+  migrate:
+    desc: Apply database migrations in Django
+    cmds:
+      - docker-compose exec api python manage.py migrate
+
+  black:check:
+    desc: Run Black in check mode
+    cmds:
+      - docker-compose exec api black --check . --diff
+
+  black:fix:
+    desc: Run Black to format the code
+    cmds:
+      - docker-compose exec api black .
+
+  ruff:check:
+    desc: Run Ruff to check the code
+    cmds:
+      - docker-compose exec api ruff check .
+
+  ruff:fix:
+    desc: Run Ruff to check and fix the code
+    cmds:
+      - docker-compose exec api ruff check . --fix
