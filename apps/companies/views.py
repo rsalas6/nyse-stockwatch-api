@@ -13,6 +13,7 @@ from .services import (
     get_company_info_twelve,
     get_market_data_twelve,
     SymbolNotFoundException,
+    QuotaExceededException,
 )
 
 logger = logging.getLogger(__name__)
@@ -193,6 +194,14 @@ def company_detail(request, pk):
                     {"detail": f"Symbol '{company.symbol}' not found."},
                     status=status.HTTP_404_NOT_FOUND,
                 )
+            except QuotaExceededException as e:
+                logger.error(f"API quota exceeded: {e}")
+                return Response(
+                    {
+                        "detail": "The API quota has been exceeded. Please wait a moment before trying again."
+                    },
+                    status=status.HTTP_429_TOO_MANY_REQUESTS,
+                )
             except Exception as e:
                 logger.error(f"Error fetching market data from Twelve Data: {e}")
                 return Response(
@@ -248,6 +257,14 @@ def get_company_info(request, symbol):
         return Response(
             {"detail": f"Symbol '{symbol}' not found."},
             status=status.HTTP_404_NOT_FOUND,
+        )
+    except QuotaExceededException as e:
+        logger.error(f"API quota exceeded: {e}")
+        return Response(
+            {
+                "detail": "The API quota has been exceeded. Please wait a moment before trying again."
+            },
+            status=status.HTTP_429_TOO_MANY_REQUESTS,
         )
     except Exception as e:
         logger.error(f"Error fetching data from Twelve Data: {e}")

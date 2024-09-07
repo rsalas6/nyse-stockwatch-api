@@ -10,6 +10,10 @@ class SymbolNotFoundException(Exception):
     pass
 
 
+class QuotaExceededException(Exception):
+    pass
+
+
 def get_company_info_alpha(symbol):
     api_key = settings.ALPHA_VINTAGE_API_KEY
     url = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={api_key}"
@@ -43,8 +47,11 @@ def get_company_info_twelve(symbol):
 
     try:
         response = requests.get(url)
-
         data = response.json()
+
+        if response.status_code == 429 or ("code" in data and data["code"] == 429):
+            raise QuotaExceededException(data.get("message", "API quota exceeded."))
+
         if not data or "code" in data:
             raise SymbolNotFoundException(f"Symbol {symbol} not found on TwelveData.")
 
@@ -52,6 +59,9 @@ def get_company_info_twelve(symbol):
 
     except SymbolNotFoundException as e:
         logger.error(f"SymbolNotFoundException: {e}")
+        raise
+    except QuotaExceededException as e:
+        logger.error(f"QuotaExceededException: {e}")
         raise
     except requests.RequestException as e:
         logger.error(
@@ -69,8 +79,11 @@ def get_market_data_twelve(symbol):
 
     try:
         response = requests.get(url)
-
         data = response.json()
+
+        if response.status_code == 429 or ("code" in data and data["code"] == 429):
+            raise QuotaExceededException(data.get("message", "API quota exceeded."))
+
         if "code" in data or not data.get("values"):
             raise SymbolNotFoundException(
                 f"Market data for symbol {symbol} not found on TwelveData."
@@ -80,6 +93,9 @@ def get_market_data_twelve(symbol):
 
     except SymbolNotFoundException as e:
         logger.error(f"SymbolNotFoundException: {e}")
+        raise
+    except QuotaExceededException as e:
+        logger.error(f"QuotaExceededException: {e}")
         raise
     except requests.RequestException as e:
         logger.error(
