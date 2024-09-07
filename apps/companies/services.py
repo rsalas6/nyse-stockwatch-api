@@ -39,12 +39,10 @@ def get_company_info_alpha(symbol):
 
 def get_company_info_twelve(symbol):
     api_key = settings.TWELVE_DATA_API_KEY
-    print(api_key)
     url = f"https://api.twelvedata.com/quote?symbol={symbol}&apikey={api_key}"
 
     try:
         response = requests.get(url)
-        response.raise_for_status()
 
         data = response.json()
         if not data or "code" in data:
@@ -71,7 +69,6 @@ def get_market_data_twelve(symbol):
 
     try:
         response = requests.get(url)
-        response.raise_for_status()
 
         data = response.json()
         if "code" in data or not data.get("values"):

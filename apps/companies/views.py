@@ -16,30 +16,36 @@ from .services import (
 
 logger = logging.getLogger(__name__)
 
+
 class CompanyPagination(PageNumberPagination):
     page_size = 9
     page_size_query_param = "page_size"
     max_page_size = 45
 
+
 @swagger_auto_schema(
-    method='get',
+    method="get",
     operation_summary="List or search companies",
     operation_description="Retrieve a list of companies, with filtering, pagination, and sorting capabilities.",
-    responses={200: CompanySerializer(many=True)}
+    responses={200: CompanySerializer(many=True)},
 )
 @swagger_auto_schema(
-    method='post',
+    method="post",
     operation_summary="Create a new company",
     operation_description="Create a new company by specifying its name, description, and symbol. Validates the symbol with an external service.",
     request_body=CompanySerializer,
-    responses={201: CompanySerializer}
+    responses={201: CompanySerializer},
 )
 @api_view(["GET", "POST"])
 def company_list_create(request):
 
     if request.method == "GET":
         valid_search_fields = [
-            "in_all", "in_name", "in_symbol", "in_description", "by_symbol"
+            "in_all",
+            "in_name",
+            "in_symbol",
+            "in_description",
+            "by_symbol",
         ]
         valid_sort_fields = ["name", "symbol"]
         valid_sort_directions = ["asc", "desc"]
@@ -126,24 +132,25 @@ def company_list_create(request):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+
 @swagger_auto_schema(
-    method='get',
+    method="get",
     operation_summary="Retrieve company details",
     operation_description="Fetch a company’s details by ID. Optionally, include market data from Twelve Data by adding 'market' to query params.",
-    responses={200: CompanySerializer}
+    responses={200: CompanySerializer},
 )
 @swagger_auto_schema(
-    method='put',
+    method="put",
     operation_summary="Update a company",
     operation_description="Update the details of a company with the given ID. Allows partial updates.",
     request_body=CompanySerializer,
-    responses={200: CompanySerializer}
+    responses={200: CompanySerializer},
 )
 @swagger_auto_schema(
-    method='delete',
+    method="delete",
     operation_summary="Delete a company",
     operation_description="Delete a company by its ID.",
-    responses={204: 'Company deleted successfully'}
+    responses={204: "Company deleted successfully"},
 )
 @api_view(["GET", "PUT", "DELETE"])
 def company_detail(request, pk):
@@ -212,11 +219,12 @@ def company_detail(request, pk):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+
 @swagger_auto_schema(
-    method='get',
+    method="get",
     operation_summary="Get external company info by symbol",
     operation_description="Fetches company information from the Twelve Data API based on a stock symbol.",
-    responses={200: 'External company info'}
+    responses={200: "External company info"},
 )
 @api_view(["GET"])
 def get_company_info(request, symbol):
@@ -224,14 +232,14 @@ def get_company_info(request, symbol):
         company_info = get_company_info_twelve(symbol)
         return Response(company_info, status=status.HTTP_200_OK)
     except SymbolNotFoundException as e:
-        logger.error(f"Symbol {symbol} not found in Alpha Vantage: {e}")
+        logger.error(f"Symbol {symbol} not found: {e}")
         return Response(
             {"detail": f"Symbol '{symbol}' not found."},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
-        logger.error(f"Error fetching data from Alpha Vantage: {e}")
+        logger.error(f"Error fetching data from Twelve Data: {e}")
         return Response(
-            {"detail": "Error fetching data from Alpha Vantage."},
+            {"detail": "Error fetching data from Twelve Data."},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
