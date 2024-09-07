@@ -240,6 +240,7 @@ def company_detail(request, pk):
 @api_view(["GET"])
 def get_company_info(request, symbol):
     try:
+        symbol = symbol.strip()
         company_info = get_company_info_twelve(symbol)
         return Response(company_info, status=status.HTTP_200_OK)
     except SymbolNotFoundException as e:
