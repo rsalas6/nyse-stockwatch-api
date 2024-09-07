@@ -61,3 +61,8 @@ tasks:
     desc: Run Ruff to check and fix the code
     cmds:
       - docker-compose exec api ruff check . --fix
+
+  test:
+    desc: Run the Django tests for the app
+    cmds:
+      - docker-compose exec api python manage.py test

@@ -60,3 +60,28 @@ These provide interactive documentation to explore the API.
 - **DELETE /api/v1/companies/{id}/**: Delete a company.
 - **GET /api/v1/companies/external/{symbol}/**: Fetch company info from Alpha Vantage.
 - **GET /api/v1/companies/{id}/?market=true**: Fetch company details with market data for the last 7 days.
+
+## Testing
+You can run unit tests with:
+
+```bash
+python manage.py test
+```
+
+### Code Formatting and Linting
+
+The project is configured to use **Black** for code formatting and **Ruff** for linting and static code analysis. These tools ensure the codebase follows Python style guidelines and is free of common issues.
+
+You can run the following commands to format and lint the code:
+
+- **Format with Black**:
+  ```bash
+  task black:fix
+  ```
+
+- **Check code with Ruff**:
+  ```bash
+  task ruff:check
+  ```
+
+Refer to the **[Taskfile.yml](./taskfile.yml)** for more commands.
