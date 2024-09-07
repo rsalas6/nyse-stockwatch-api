@@ -1,5 +1,6 @@
 import logging
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from django.db import DatabaseError
 from django.db.models import Q
 from rest_framework import status
@@ -21,6 +22,16 @@ class CompanyPagination(PageNumberPagination):
     page_size = 9
     page_size_query_param = "page_size"
     max_page_size = 45
+
+
+@swagger_auto_schema(
+    method="get",
+    operation_description="Validates the provided token.",
+    responses={200: openapi.Response("Token is valid")},
+)
+@api_view(["GET"])
+def validate_token(request):
+    return Response({"detail": "Token is valid."}, status=status.HTTP_200_OK)
 
 
 @swagger_auto_schema(

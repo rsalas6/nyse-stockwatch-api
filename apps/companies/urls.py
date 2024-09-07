@@ -10,4 +10,9 @@ urlpatterns = [
         views.get_company_info,
         name="company-info",
     ),
+    path(
+        "validate-token/",
+        views.validate_token,
+        name="validate-token",
+    ),
 ]

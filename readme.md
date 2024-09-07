@@ -23,6 +23,7 @@ POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
 ALPHA_VINTAGE_API_KEY=your_alpha_vantage_api_key
 TWELVE_DATA_API_KEY=your_twelve_data_api_key
+API_ACCESS_TOKEN=api_token_for_requests
 ```
 
 ## Getting Started

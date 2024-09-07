@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-v6)f@0f3kgt=pg_e7xvzl9$n&p(can37g_fhdx**=esoz3h$+7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nyse-api.beto.page', 'nyse.beto.page', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "nyse.middlewares.auth_middleware.TokenAuthMiddleware",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -178,5 +179,7 @@ LOGGING = {
     },
 }
 
+# Configuration variables
 ALPHA_VINTAGE_API_KEY = os.environ.get("ALPHA_VINTAGE_API_KEY")
 TWELVE_DATA_API_KEY = os.environ.get("TWELVE_DATA_API_KEY")
+API_ACCESS_TOKEN = os.environ.get("API_ACCESS_TOKEN")
