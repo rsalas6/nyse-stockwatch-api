@@ -5,9 +5,9 @@ from django.db import models
 
 class Company(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.symbol = self.symbol.upper()
