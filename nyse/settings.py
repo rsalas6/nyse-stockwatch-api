@@ -155,7 +155,7 @@ LOGGING = {
     "handlers": {
         "console": {"class": "logging.StreamHandler"},
         "file": {
-            "level": "DEBUG",
+            "level": "ERROR",
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(BASE_DIR, "logs", "app.log"),
             "maxBytes": 5 * 1024 * 1024,
@@ -172,7 +172,7 @@ LOGGING = {
     "loggers": {
         "": {
             "handlers": ["console", "file"],
-            "level": os.environ.get("DJANGO_LOG_LEVEL", "DEBUG"),
+            "level": os.environ.get("DJANGO_LOG_LEVEL", "ERROR"),
             "propagate": False,
         },
     },
