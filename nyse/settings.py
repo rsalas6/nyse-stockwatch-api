@@ -15,7 +15,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -24,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-v6)f@0f3kgt=pg_e7xvzl9$n&p(can37g_fhdx**=esoz3h$+7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['nyse-api.beto.page', 'nyse.beto.page', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["nyse-api.beto.page", "nyse.beto.page", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -39,9 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "drf_yasg",
     "apps.companies",
     "corsheaders",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "nyse.middlewares.auth_middleware.TokenAuthMiddleware",
+    # "nyse.middlewares.auth_middleware.TokenAuthMiddleware",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -148,6 +149,8 @@ REST_FRAMEWORK = {
     "DEFAULT_VERSION": "v1",
     "ALLOWED_VERSIONS": ["v1"],
 }
+
+SWAGGER_SETTINGS = {"USE_SESSION_AUTH": False}
 
 # Logging
 LOGGING = {
