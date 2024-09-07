@@ -33,7 +33,7 @@ API_ACCESS_TOKEN=api_token_for_requests
 To initialize the project, use the `task init` command:
 
 ```bash
-task init
+task run
 ```
 
 This command will:
